@@ -19,7 +19,7 @@ public class GenLuncher {
         return this.Gen(java, mcp, username, version, assetspath, gamedir, xmx, false,"");
     }
     public String Gen(String java,String mcp,String username,String version,String assetspath,String gamedir,int xmx,boolean login,String password) throws IOException, JSONException, AuthException{
-        File mcpf = new File(mcp + "\\.minecraft\\");
+        File mcpf = this.getMinecraftFolder(new File(mcp));
         File j = new File(mcpf + "\\versions\\" + version + "\\" + version + ".json");
         File libf = new File(mcpf.getAbsoluteFile() + "\\libraries\\");
         Json json = new Json();
@@ -48,6 +48,18 @@ public class GenLuncher {
         }
         this.replace("arg", this.args);
         return cmd;
+    }
+    private File getMinecraftFolder(File f){
+        String os = System.getProperty("os.name").toLowerCase();
+        if(os.contains("win")){
+            return new File(f,".minecraft/");
+        }else if(os.contains("mac")){
+            return new File(f,"Library/Application Support/minecraft");
+        }else if(os.contains("linux") || os.contains("unix")){
+            return new File(f,".minecraft/");
+        }else{
+            return new File(f,"minecraft/");
+        }
     }
     private void replace(String var,Object to){
         this.cmd = this.cmd.replace("%" + var.toUpperCase() + "%",to.toString());
