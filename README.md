@@ -1,0 +1,2 @@
+# MinecraftStartScript
+Minecraft启动脚本生成器
